@@ -24,7 +24,14 @@ namespace core_api {
         public void ConfigureServices (IServiceCollection services) {
 
             services.AddDbContext<CoreApiContext> (opt => opt.UseInMemoryDatabase ("Employee"));
-            services.AddMvc ();
+            services.AddMvcCore().AddApiExplorer().AddAuthorization().AddJsonFormatters();
+
+            services.AddAuthentication("Bearer")
+            .AddIdentityServerAuthentication(options => {
+                options.Authority = "http://localhost:5000";
+                options.RequireHttpsMetadata = false;
+                options.ApiName = "api1";
+            });
 
             // Register the Swagger generator, defining one or more Swagger documents
             services.AddSwaggerGen (c => {
@@ -46,6 +53,7 @@ namespace core_api {
                 c.SwaggerEndpoint ("/swagger/v1/swagger.json", "My API V1");
             });
 
+            app.UseAuthentication();
             app.UseMvc ();
         }
     }

@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using CoreApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using IdentityServer4.AccessTokenValidation;
 
 namespace CoreApi.Controllers {
     [Route ("api/employee")]
     [ApiController]
+
+    [Authorize (AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public class EmployeeController : Controller {
         private readonly CoreApiContext _context;
 
